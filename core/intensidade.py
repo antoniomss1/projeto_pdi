@@ -10,24 +10,32 @@ from . import utils
 def negativo(img):
     """s = 255 - r"""
     return (255 - img.astype(np.int32)).astype(np.uint8)
+    #return (255 - img.astype(np.int32)).astype(np.uint8)
 
 
 def limiarizacao(img, T=128):
     """s = 255 se r >= T, senão 0"""
+    #return (img >= T ? 255 : 0)
     return np.where(img >= T, 255, 0).astype(np.uint8)
 
 
 def alargamento_contraste(img, r1, s1, r2, s2):
     """Função linear por partes definida por (r1,s1) e (r2,s2). Usa tabela (LUT)."""
-    lut = np.zeros(256)
-    for r in range(256):
-        if r < r1:
-            lut[r] = s1 * r / r1 if r1 > 0 else s1
-        elif r <= r2:
-            lut[r] = s1 + (s2 - s1) * (r - r1) / (r2 - r1) if r2 > r1 else s1
-        else:
-            lut[r] = s2 + (255 - s2) * (r - r2) / (255 - r2) if r2 < 255 else s2
-    return utils.ajustar_faixa(lut[img], "clamp")
+    rmax = np.max(img)
+    rmin = np.min(img)
+
+    nimg = ((s2 - s1)/(rmax - rmin))*(img-rmin)+s1
+    return nimg.astype(np.uint8)
+
+#    lut = np.zeros(256)
+#    for r in range(256):
+#        if r < r1:
+#            lut[r] = s1 * r / r1 if r1 > 0 else s1
+#        elif r <= r2:
+#            lut[r] = s1 + (s2 - s1) * (r - r1) / (r2 - r1) if r2 > r1 else s1
+#        else:
+#            lut[r] = s2 + (255 - s2) * (r - r2) / (255 - r2) if r2 < 255 else s2
+#    return utils.ajustar_faixa(lut[img], "clamp")
 
 
 def gamma(img, c=1.0, gamma=1.0):
