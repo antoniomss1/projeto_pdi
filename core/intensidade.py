@@ -62,13 +62,13 @@ def dissolve_uniforme(img_a, img_b, alpha=0.5):
     return utils.ajustar_faixa(nimg, "clamp")
 
 
-def dissolve_nao_uniforme(img_a, img_b, alpha_ini=1.0, alpha_fim=0.0):
+def dissolve_nao_uniforme(img_a, img_t, img_b):
     """alpha varia linearmente da coluna 0 até a última coluna.
     (Confira na disciplina se o 'não uniforme' do enunciado segue outra regra.)"""
-#    t = alpha
-#    nimg = (1-img_b.astype(np.float64)/255)*img_a + (img_b.astype(np.float64)/255)*img_a
+    nimg = (1-img_t.astype(np.float64)/255)*img_a + (img_t.astype(np.float64)/255)*img_b
+    return utils.ajustar_faixa(nimg, "clamp")
 
-    larg = img_a.shape[1]
-    alpha = np.linspace(alpha_ini, alpha_fim, larg)[np.newaxis, :]
-    g = alpha * img_a.astype(np.float64) + (1 - alpha) * img_b.astype(np.float64)
-    return utils.ajustar_faixa(g, "clamp")
+#    larg = img_a.shape[1]
+#    alpha = np.linspace(alpha_ini, alpha_fim, larg)[np.newaxis, :]
+#    g = alpha * img_a.astype(np.float64) + (1 - alpha) * img_b.astype(np.float64)
+#    return utils.ajustar_faixa(g, "clamp")
