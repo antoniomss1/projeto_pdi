@@ -29,4 +29,11 @@ def equalizar(img):
     """TODO: equalização.
     1) h = histograma  2) p = h / total  3) cdf = soma acumulada de p
     4) s = round(255 * cdf[r])  5) aplicar a tabela (LUT) em cada pixel."""
-    raise NotImplementedError("histograma.equalizar")
+    h = calcular_histograma(img)
+    csum = np.cumsum(h)
+    r,c = img.shape
+    l = 256
+    nimg = np.round((l-1)/(r*c) * csum[img])
+    return nimg.astype(np.uint8)
+    
+    #raise NotImplementedError("histograma.equalizar")
