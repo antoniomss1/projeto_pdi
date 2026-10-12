@@ -39,11 +39,11 @@ def imagem_exemplo(tam: int = 256) -> np.ndarray:
 
 
 # ------------------------------------------------------- faixa [0, 255]
-def clamp(a: np.ndarray) -> np.ndarray:
+def clamp(a: np.ndarray):
     return np.clip(a, 0, 255)
 
 
-def normalizar(a: np.ndarray) -> np.ndarray:
+def normalizar(a: np.ndarray):
     """Reescala linearmente [min, max] -> [0, 255]."""
     a = a.astype(np.float64)
     mn, mx = a.min(), a.max()
@@ -52,7 +52,7 @@ def normalizar(a: np.ndarray) -> np.ndarray:
     return (a - mn) * 255.0 / (mx - mn)
 
 
-def ajustar_faixa(a: np.ndarray, modo: str = "clamp") -> np.ndarray:
+def ajustar_faixa(a: np.ndarray, modo: str = "clamp"):
     """Converte resultado (float/int, possivelmente fora de [0,255]) em uint8.
 
     clamp      : corta valores < 0 em 0 e > 255 em 255
@@ -71,7 +71,7 @@ def ajustar_faixa(a: np.ndarray, modo: str = "clamp") -> np.ndarray:
 
 
 # ----------------------------------------------------------------- bordas
-def preencher_borda(img, topo, baixo, esq, dir_, modo="replicar") -> np.ndarray:
+def preencher_borda(img, topo, baixo, esq, dir_, modo="replicar"):
     """Acrescenta margens à imagem para que máscaras/janelas caibam nas bordas."""
     tipo = {"zeros": "constant", "replicar": "edge", "espelhar": "reflect"}[modo]
     return np.pad(img, ((topo, baixo), (esq, dir_)), mode=tipo)

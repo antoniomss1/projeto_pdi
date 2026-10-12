@@ -40,25 +40,34 @@ def alargamento_contraste(img, r1, s1, r2, s2):
 
 def gamma(img, c=1.0, gamma=1.0):
     """s = c * 255 * (r/255)^gamma"""
-    s = c * 255.0 * (img.astype(np.float64) / 255.0) ** gamma
-    return utils.ajustar_faixa(s, "clamp")
+    nimg = ((img.astype(np.float64)/255.0) ** (gamma)) * c * 255.0
+    #s = c * 255.0 * (img.astype(np.float64) / 255.0) ** gamma
+    #return utils.ajustar_faixa(s, "clamp")
+    return utils.ajustar_faixa(nimg, "clamp")
 
 
 def logaritmo(img, c=46.0):
     """s = c * ln(1 + r).  c ~ 255/ln(256) = 46.0 mapeia 255 -> 255."""
-    s = c * np.log1p(img.astype(np.float64))
-    return utils.ajustar_faixa(s, "clamp")
+    nimg = c * np.log(1 + img.astype(np.float64))
+    #s = c * np.log1p(img.astype(np.float64))
+    return utils.ajustar_faixa(nimg, "clamp")
 
 
 def dissolve_uniforme(img_a, img_b, alpha=0.5):
-    """g = alpha*A + (1-alpha)*B, alpha constante."""
-    g = alpha * img_a.astype(np.float64) + (1 - alpha) * img_b.astype(np.float64)
-    return utils.ajustar_faixa(g, "clamp")
+    """g = t*A + (1-alpha)*B, alpha constante."""
+    t = alpha
+    nimg = (1-t)*img_a.astype(np.float64) + (t) * img_b.astype(np.float64)
+
+    #g = t * img_a.astype(np.float64) + (1 - alpha) * img_b.astype(np.float64)
+    return utils.ajustar_faixa(nimg, "clamp")
 
 
 def dissolve_nao_uniforme(img_a, img_b, alpha_ini=1.0, alpha_fim=0.0):
     """alpha varia linearmente da coluna 0 até a última coluna.
     (Confira na disciplina se o 'não uniforme' do enunciado segue outra regra.)"""
+#    t = alpha
+#    nimg = (1-img_b.astype(np.float64)/255)*img_a + (img_b.astype(np.float64)/255)*img_a
+
     larg = img_a.shape[1]
     alpha = np.linspace(alpha_ini, alpha_fim, larg)[np.newaxis, :]
     g = alpha * img_a.astype(np.float64) + (1 - alpha) * img_b.astype(np.float64)
