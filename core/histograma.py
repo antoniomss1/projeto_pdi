@@ -14,7 +14,15 @@ def calcular_histograma(img) -> np.ndarray:
 def expandir(img):
     """TODO: expansão (alargamento linear) de [min, max] da imagem para [0, 255].
     s = (r - min) * 255 / (max - min).  Cuidado com max == min."""
-    raise NotImplementedError("histograma.expandir")
+    rmin = np.min(img)
+    rmax = np.max(img)
+
+    if (rmax == rmin):
+        return img.copy()
+
+    nimg = np.round(((img.astype(np.float64) - rmin)/(rmax - rmin))*(255))
+    return nimg.astype(np.uint8)
+    #raise NotImplementedError("histograma.expandir")
 
 
 def equalizar(img):
