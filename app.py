@@ -93,11 +93,17 @@ def ui_intensidade(op, ent):
         if modo == "Uniforme":
             return intensidade.dissolve_uniforme, dict(
                 img_b=img_b, alpha=st.slider("α", 0.0, 1.0, 0.5, 0.05))
-        c = st.columns(2)
+
+        img_t = st.file_uploader("imagem de transição", type=["png", "jpg", "jpeg", "bmp"], key="img_t")
+
+        if img_t is not None:
+            img_t = utils.carregar_cinza_redimensionada(img_t, ent.shape)
+        else:
+            st.info("Sem imagem de transição: usando a própria imagem espelhada.")
+            img_t = np.fliplr(ent).copy()
+        
         return intensidade.dissolve_nao_uniforme, dict(
-            img_b=img_b,
-            alpha_ini=c[0].slider("α inicial (coluna 0)", 0.0, 1.0, 1.0, 0.05),
-            alpha_fim=c[1].slider("α final (última coluna)", 0.0, 1.0, 0.0, 0.05))
+            img_b=img_b, img_t=img_t)
 
 
 def ui_histograma(op, ent):
