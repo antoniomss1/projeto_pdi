@@ -173,7 +173,7 @@ def ui_agucamento(op, ent):
 def ui_contraste(op, ent):
     c = st.columns(3)
     return contraste_adaptativo.contraste_adaptativo, dict(
-        c=c[0].number_input("c", 0.0, 10.0, 1.0, 0.1),
+        c=c[0].number_input("c", 0.0, 100.0, 1.0, 0.1),
         n=c[1].slider("Vizinhança n x n", 3, 31, 7, 2),
         borda=c[2].selectbox("Tratamento de borda", utils.MODOS_BORDA, index=1))
 
